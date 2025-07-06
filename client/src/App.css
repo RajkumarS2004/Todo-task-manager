@@ -1,0 +1,193 @@
+/* ---------- Scrollbar (Dark Cyan Theme) ---------- */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #232526; /* dark background */
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #00eaff 40%, #a259ff 100%); /* cyan to purple gradient */
+  border-radius: 4px;
+  border: 1px solid #181c24;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #f1c27d 40%, #bfa06a 100%);
+}
+
+/* ---------- Smooth Transitions ---------- */
+* {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ---------- Focus Ring (Cyan Glow) ---------- */
+.focus-ring:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba(0, 234, 255, 0.7); /* cyan glow */
+}
+
+/* ---------- Pulse Animation ---------- */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* ---------- Fade In Animation (for Tasks) ---------- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.task-completed {
+  animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ---------- Responsive Helpers ---------- */
+@media (max-width: 640px) {
+  .mobile-hidden {
+    display: none !important;
+  }
+}
+
+/* ---------- Button Hover Dark Effect ---------- */
+.btn-hover {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(90deg, #232526 80%, #181c24 100%);
+  color: #00eaff; /* cyan text */
+  border: 1px solid #00eaff;
+  border-radius: 8px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  box-shadow: 0 2px 8px 0 rgba(0, 234, 255, 0.08);
+}
+
+.btn-hover::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0, 234, 255, 0.25),
+    transparent
+  );
+  transition: left 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-hover:hover::before {
+  left: 100%;
+}
+
+.btn-hover:hover {
+  color: #a259ff;
+  box-shadow: 0 4px 16px 0 rgba(0, 234, 255, 0.15);
+}
+
+/* ---------- Glass Morphism Effects ---------- */
+.glass-dark {
+  background: rgba(35, 37, 38, 0.8);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 234, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.glass-light {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 234, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(0, 234, 255, 0.12);
+}
+
+/* ---------- Gradient Backgrounds ---------- */
+.bg-gradient-dark {
+  background: linear-gradient(135deg, #181c24 0%, #232526 100%);
+}
+
+.bg-gradient-cyan {
+  background: linear-gradient(135deg, #00eaff 0%, #a259ff 100%);
+}
+
+.bg-gradient-gold {
+  background: linear-gradient(135deg, #f1c27d 0%, #bfa06a 100%);
+}
+
+/* ---------- Text Gradients ---------- */
+.text-gradient-cyan {
+  background: linear-gradient(135deg, #00eaff 0%, #a259ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-gold {
+  background: linear-gradient(135deg, #f1c27d 0%, #bfa06a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ---------- Border Gradients ---------- */
+.border-gradient-cyan {
+  border: 2px solid;
+  border-image: linear-gradient(135deg, #00eaff, #a259ff) 1;
+}
+
+.border-gradient-gold {
+  border: 2px solid;
+  border-image: linear-gradient(135deg, #f1c27d, #bfa06a) 1;
+}
+
+/* ---------- Shadow Effects ---------- */
+.shadow-cyan {
+  box-shadow: 0 4px 16px 0 rgba(0, 234, 255, 0.18);
+}
+
+.shadow-gold {
+  box-shadow: 0 4px 16px 0 rgba(241, 194, 125, 0.18);
+}
+
+.shadow-dark {
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.32);
+}
+
+/* ---------- Hover Effects ---------- */
+.hover-lift {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 12px 48px 0 rgba(0, 234, 255, 0.25);
+}
+
+/* ---------- Loading States ---------- */
+.loading-shimmer {
+  background: linear-gradient(90deg, #232526 25%, #2a2d2e 50%, #232526 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* App-specific styles that complement index.css */
+
