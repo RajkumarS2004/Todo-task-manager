@@ -21,8 +21,10 @@ const DashboardLayout = () => {
         <div className="absolute top-10 right-10 w-24 h-24 sm:w-40 sm:h-40 rounded-full bg-[#f1c27d]/5 blur-2xl animate-pulse delay-2000" />
       </div>
 
-      {/* Top Navigation Bar */}
-      <TopNavBar navLinks={navLinks} />
+      {/* Top Navigation Bar - Ensure it's always visible */}
+      <div className="relative z-50">
+        <TopNavBar navLinks={navLinks} />
+      </div>
       
       {/* Main content area */}
       <main className="relative z-10 flex-1">

@@ -19,7 +19,17 @@ const createTask = async (req, res) => {
     });
     
     const savedTask = await newTask.save();
-    res.status(201).json(savedTask);
+    
+    // Populate the createdBy field
+    const populatedTask = await Task.findById(savedTask._id)
+      .populate('createdBy', 'name email avatar')
+      .populate('sharedWith', 'name email avatar');
+    
+    res.status(201).json({
+      data: {
+        task: populatedTask
+      }
+    });
   } catch (err) {
     console.error('Create task error:', err);
     res.status(500).json({ message: 'Failed to create task' });
@@ -40,8 +50,8 @@ const getTasks = async (req, res) => {
       ]
     };
 
-    if (status) filter.status = status;
-    if (priority) filter.priority = priority;
+    if (status && status !== 'all') filter.status = status;
+    if (priority && priority !== 'all') filter.priority = priority;
 
     const tasks = await Task.find(filter)
       .populate('createdBy', 'name email avatar')
@@ -53,13 +63,10 @@ const getTasks = async (req, res) => {
     const total = await Task.countDocuments(filter);
 
     res.json({
-      tasks,
-      pagination: {
-        currentPage: Number(page),
+      data: {
+        tasks,
         totalPages: Math.ceil(total / limit),
-        totalTasks: total,
-        hasNext: page * limit < total,
-        hasPrev: page > 1
+        totalTasks: total
       }
     });
   } catch (err) {

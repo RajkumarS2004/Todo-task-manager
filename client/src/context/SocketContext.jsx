@@ -12,9 +12,26 @@ export const SocketProvider = ({ children }) => {
   useEffect(() => {
     if (isAuthenticated && user) {
       const token = localStorage.getItem('token');
-      const newSocket = io(import.meta.env.VITE_API_URL || 'http://localhost:5000', {
+      
+      // Get the WebSocket URL, fallback to API URL without /api, or default
+      let wsUrl = import.meta.env.VITE_WS_URL;
+      if (!wsUrl) {
+        const apiUrl = import.meta.env.VITE_API_URL;
+        if (apiUrl) {
+          // Remove /api from the end if present
+          wsUrl = apiUrl.replace(/\/api$/, '');
+        } else {
+          wsUrl = 'http://localhost:5000';
+        }
+      }
+      
+      console.log('Connecting to WebSocket:', wsUrl);
+      
+      const newSocket = io(wsUrl, {
         auth: { token },
-        transports: ['websocket', 'polling']
+        transports: ['websocket', 'polling'],
+        timeout: 20000,
+        forceNew: true
       });
 
       newSocket.on('connect', () => {
@@ -30,6 +47,26 @@ export const SocketProvider = ({ children }) => {
       newSocket.on('connect_error', (error) => {
         console.error('Socket connection error:', error);
         setConnected(false);
+        
+        // If it's an authentication error, try to reconnect without token
+        if (error.message === 'Authentication error') {
+          console.log('Authentication failed, trying without token...');
+          const fallbackSocket = io(wsUrl, {
+            transports: ['websocket', 'polling'],
+            timeout: 20000,
+            forceNew: true
+          });
+          
+          fallbackSocket.on('connect', () => {
+            console.log('Connected without authentication');
+            setConnected(true);
+            setSocket(fallbackSocket);
+          });
+          
+          fallbackSocket.on('connect_error', (fallbackError) => {
+            console.error('Fallback connection also failed:', fallbackError);
+          });
+        }
       });
 
       setSocket(newSocket);

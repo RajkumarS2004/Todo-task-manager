@@ -20,19 +20,15 @@ const Analytics = () => {
   });
 
   const [selectedPeriod, setSelectedPeriod] = useState('week');
-  const [loading, setLoading] = useState(true);
 
   // Fetch tasks for analytics
   const fetchTasks = async () => {
     try {
-      setLoading(true);
       const response = await tasksAPI.getTasks({ limit: 1000 }); // Get all tasks for analytics
       calculateAnalytics(response.data.tasks);
     } catch (error) {
       console.error('Error fetching tasks:', error);
       toast.error('Failed to load analytics data');
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -139,54 +135,47 @@ const Analytics = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] relative overflow-hidden">
-      {/* Enhanced Bokeh Background Effects */}
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-1/4 left-1/3 w-48 h-48 sm:w-96 sm:h-96 rounded-full bg-[#00eaff]/5 blur-3xl animate-pulse" />
-        <div className="absolute bottom-10 right-1/4 w-36 h-36 sm:w-72 sm:h-72 rounded-full bg-[#a259ff]/5 blur-2xl animate-pulse delay-1000" />
-        <div className="absolute top-10 right-10 w-24 h-24 sm:w-40 sm:h-40 rounded-full bg-[#f1c27d]/8 blur-2xl animate-pulse delay-2000" />
-        <div className="absolute top-1/2 left-1/4 w-36 h-36 sm:w-64 sm:h-64 rounded-full bg-[#00eaff]/3 blur-3xl animate-pulse delay-1500" />
-        <div className="absolute bottom-1/4 left-1/2 w-32 h-32 sm:w-48 sm:h-48 rounded-full bg-[#a259ff]/4 blur-2xl animate-pulse delay-3000" />
-      </div>
-
-      <div className="relative z-10 max-w-6xl mx-auto px-3 sm:px-4 py-3 sm:py-4">
-        {/* Enhanced Header */}
-        <div className="mb-4 sm:mb-6">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mb-3">
-            <div className="h-10 w-10 sm:h-12 sm:w-12 bg-gradient-to-br from-[#00eaff] to-[#a259ff] rounded-xl flex items-center justify-center shadow-lg border border-[#00eaff] animate-pulse">
-              <svg className="h-5 w-5 sm:h-6 sm:w-6 text-white drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
+      {/* Header */}
+      <div className="mb-8 sm:mb-12">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6 mb-4">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
+            <div className="h-12 w-12 sm:h-16 sm:w-16 bg-gradient-cyan rounded-xl sm:rounded-2xl flex items-center justify-center shadow-cyan border border-[#00eaff]">
+              <svg className="h-6 w-6 sm:h-8 sm:w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2z" />
               </svg>
             </div>
             <div className="flex-1">
-              <h1 className="text-xl sm:text-2xl font-extrabold text-gradient-cyan drop-shadow-lg mb-1 tracking-tight">
-                Analytics Dashboard 📊
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#b0b8c1] mb-2 tracking-tight">
+                Analytics Dashboard <span className="text-gradient-cyan">📊</span>
               </h1>
-              <p className="text-sm text-[#b0b8c1] font-medium">
+              <p className="text-base sm:text-lg text-[#b0b8c1] font-light">
                 Track your productivity and performance insights in real-time
               </p>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="h-2 w-2 bg-[#43e97b] rounded-full animate-pulse"></div>
-              <span className="text-xs text-[#43e97b] font-medium">Live Data</span>
-            </div>
           </div>
+          <div className="flex items-center gap-2">
+            <div className="h-2 w-2 bg-[#43e97b] rounded-full animate-pulse"></div>
+            <span className="text-sm text-[#43e97b] font-medium">Live Data</span>
+          </div>
+        </div>
 
-          {/* Period Filter */}
-          <div className="flex items-center gap-2 mb-3">
-            <span className="text-xs text-[#b0b8c1] font-medium">Time Period:</span>
-            <div className="flex gap-1">
+        {/* Period Filter */}
+        <div className="glass-dark rounded-xl sm:rounded-2xl border border-[#00eaff]/20 p-4 sm:p-6 shadow-dark">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+            <span className="text-sm sm:text-base text-[#b0b8c1] font-medium">Time Period:</span>
+            <div className="flex flex-wrap gap-2">
               {periodOptions.map((option) => (
                 <button
                   key={option.value}
                   onClick={() => setSelectedPeriod(option.value)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 flex items-center gap-1.5 ${
+                  className={`px-4 py-2 sm:px-6 sm:py-3 rounded-lg sm:rounded-xl text-sm sm:text-base font-medium transition-all duration-300 flex items-center gap-2 ${
                     selectedPeriod === option.value
                       ? 'bg-gradient-to-r from-[#00eaff]/20 to-[#a259ff]/20 text-[#00eaff] border border-[#00eaff]/30 shadow-cyan'
                       : 'text-[#b0b8c1] hover:text-[#00eaff] hover:bg-[#00eaff]/10'
                   }`}
                 >
-                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={option.icon} />
                   </svg>
                   {option.label}
@@ -195,245 +184,203 @@ const Analytics = () => {
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Enhanced Key Metrics */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4 sm:mb-6">
-          <div className="p-3 sm:p-4 rounded-xl bg-[#1a1a1a]/80 backdrop-blur-sm border border-[#00eaff]/20 flex flex-col gap-2 shadow-lg hover:shadow-xl transition-all duration-300 group">
-            <div className="flex items-center justify-between">
-              <div className="h-8 w-8 bg-[#00eaff]/10 rounded-lg flex items-center justify-center border border-[#00eaff]/30 group-hover:scale-110 transition-transform duration-200">
-                <svg className="h-4 w-4 text-[#00eaff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-                </svg>
-              </div>
-              <span className="px-2 py-1 text-xs font-bold bg-gradient-to-r from-[#00eaff] to-[#a259ff] text-white rounded-full">
-                Total
-              </span>
-            </div>
-            <div>
-              <span className="text-xs text-[#b0b8c1] font-medium">Total Tasks</span>
-              <div className="text-lg sm:text-xl font-bold text-gradient-cyan">{analytics.totalTasks}</div>
-            </div>
-          </div>
-
-          <div className="p-3 sm:p-4 rounded-xl bg-[#1a1a1a]/80 backdrop-blur-sm border border-[#43e97b]/20 flex flex-col gap-2 shadow-lg hover:shadow-xl transition-all duration-300 group">
-            <div className="flex items-center justify-between">
-              <div className="h-8 w-8 bg-[#43e97b]/10 rounded-lg flex items-center justify-center border border-[#43e97b]/30 group-hover:scale-110 transition-transform duration-200">
-                <svg className="h-4 w-4 text-[#43e97b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <span className="px-2 py-1 text-xs font-bold bg-gradient-to-r from-[#43e97b] to-[#38d9a9] text-white rounded-full">
-                {analytics.completionRate}%
-              </span>
-            </div>
-            <div>
-              <span className="text-xs text-[#b0b8c1] font-medium">Completion Rate</span>
-              <div className="text-lg sm:text-xl font-bold text-gradient-gold">{analytics.completionRate}%</div>
-            </div>
-          </div>
-
-          <div className="p-3 sm:p-4 rounded-xl bg-[#1a1a1a]/80 backdrop-blur-sm border border-[#f1c27d]/20 flex flex-col gap-2 shadow-lg hover:shadow-xl transition-all duration-300 group">
-            <div className="flex items-center justify-between">
-              <div className="h-8 w-8 bg-[#f1c27d]/10 rounded-lg flex items-center justify-center border border-[#f1c27d]/30 group-hover:scale-110 transition-transform duration-200">
-                <svg className="h-4 w-4 text-[#f1c27d]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-              <span className="px-2 py-1 text-xs font-bold bg-gradient-to-r from-[#f1c27d] to-[#bfa06a] text-white rounded-full">
-                Score
-              </span>
-            </div>
-            <div>
-              <span className="text-xs text-[#b0b8c1] font-medium">Productivity Score</span>
-              <div className="text-lg sm:text-xl font-bold text-gradient-cyan">{analytics.productivityScore}</div>
-            </div>
-          </div>
-
-          <div className="p-3 sm:p-4 rounded-xl bg-[#1a1a1a]/80 backdrop-blur-sm border border-[#a259ff]/20 flex flex-col gap-2 shadow-lg hover:shadow-xl transition-all duration-300 group">
-            <div className="flex items-center justify-between">
-              <div className="h-8 w-8 bg-[#a259ff]/10 rounded-lg flex items-center justify-center border border-[#a259ff]/30 group-hover:scale-110 transition-transform duration-200">
-                <svg className="h-4 w-4 text-[#a259ff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <span className="px-2 py-1 text-xs font-bold bg-gradient-to-r from-[#a259ff] to-[#8b5cf6] text-white rounded-full">
-                Avg
-              </span>
-            </div>
-            <div>
-              <span className="text-xs text-[#b0b8c1] font-medium">Avg. Completion</span>
-              <div className="text-lg sm:text-xl font-bold text-gradient-gold">{analytics.averageCompletionTime}d</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Enhanced Analytics Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4 sm:mb-6">
-          {/* Daily Progress Chart */}
-          <div className="p-4 rounded-xl bg-[#1a1a1a]/80 backdrop-blur-sm border border-[#00eaff]/20 hover:shadow-xl transition-all duration-300">
-            <h3 className="text-lg font-bold text-gradient-cyan mb-3 flex items-center gap-2">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
-              </svg>
-              Daily Progress
-            </h3>
-            <div className="space-y-3">
-              {analytics.dailyProgress.map((day, index) => (
-                <div key={index} className="flex items-center justify-between p-3 rounded-lg bg-[#0a0a0a]/60 border border-[#00eaff]/10 hover:border-[#00eaff]/30 transition-all duration-200">
-                  <div className="flex-1">
-                    <h4 className="font-semibold text-[#00eaff] text-sm">{day.date}</h4>
-                    <p className="text-xs text-[#b0b8c1]">{day.completed} of {day.total} tasks completed</p>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-20 h-2 bg-[#0a0a0a] rounded-full overflow-hidden">
-                      <div 
-                        className="h-full bg-gradient-to-r from-[#00eaff] to-[#a259ff] rounded-full transition-all duration-500"
-                        style={{ width: `${day.percentage}%` }}
-                      />
-                    </div>
-                    <span className="text-sm font-bold text-[#00eaff] min-w-[3rem] text-right">
-                      {day.percentage}%
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Priority Distribution */}
-          <div className="p-4 rounded-xl bg-[#1a1a1a]/80 backdrop-blur-sm border border-[#00eaff]/20 hover:shadow-xl transition-all duration-300">
-            <h3 className="text-lg font-bold text-gradient-cyan mb-3 flex items-center gap-2">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-              </svg>
-              Priority Distribution
-            </h3>
-            <div className="space-y-3">
-              {Object.entries(analytics.priorityDistribution).map(([priority, count]) => (
-                <div key={priority} className="flex items-center justify-between p-3 rounded-lg bg-[#0a0a0a]/60 border border-[#00eaff]/10">
-                  <div className="flex items-center gap-2">
-                    <div className={`w-3 h-3 rounded-full ${
-                      priority === 'high' ? 'bg-[#ff6b6b]' : 
-                      priority === 'medium' ? 'bg-[#f1c27d]' : 'bg-[#43e97b]'
-                    }`}></div>
-                    <span className="text-sm font-medium text-[#00eaff] capitalize">{priority}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-16 h-2 bg-[#0a0a0a] rounded-full overflow-hidden">
-                      <div 
-                        className={`h-full rounded-full transition-all duration-500 ${
-                          priority === 'high' ? 'bg-[#ff6b6b]' : 
-                          priority === 'medium' ? 'bg-[#f1c27d]' : 'bg-[#43e97b]'
-                        }`}
-                        style={{ width: `${(count / analytics.totalTasks) * 100}%` }}
-                      />
-                    </div>
-                    <span className="text-sm font-bold text-gradient-cyan min-w-[2rem] text-right">
-                      {count}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Efficiency Metrics */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4 sm:mb-6">
-          <div className="p-3 rounded-xl bg-[#1a1a1a]/80 backdrop-blur-sm border border-[#00eaff]/20 hover:shadow-lg transition-all duration-300">
-            <div className="text-center">
-              <div className="text-lg sm:text-xl font-bold text-gradient-cyan mb-1">
-                {analytics.efficiencyMetrics.tasksPerDay}
-              </div>
-              <div className="text-xs text-[#b0b8c1]">Tasks/Day</div>
-            </div>
-          </div>
-          <div className="p-3 rounded-xl bg-[#1a1a1a]/80 backdrop-blur-sm border border-[#43e97b]/20 hover:shadow-lg transition-all duration-300">
-            <div className="text-center">
-              <div className="text-lg sm:text-xl font-bold text-gradient-gold mb-1">
-                {analytics.efficiencyMetrics.completionEfficiency}%
-              </div>
-              <div className="text-xs text-[#b0b8c1]">Efficiency</div>
-            </div>
-          </div>
-          <div className="p-3 rounded-xl bg-[#1a1a1a]/80 backdrop-blur-sm border border-[#f1c27d]/20 hover:shadow-lg transition-all duration-300">
-            <div className="text-center">
-              <div className="text-lg sm:text-xl font-bold text-gradient-cyan mb-1">
-                {analytics.efficiencyMetrics.averageTaskDuration}h
-              </div>
-              <div className="text-xs text-[#b0b8c1]">Avg Duration</div>
-            </div>
-          </div>
-          <div className="p-3 rounded-xl bg-[#1a1a1a]/80 backdrop-blur-sm border border-[#a259ff]/20 hover:shadow-lg transition-all duration-300">
-            <div className="text-center">
-              <div className="text-lg sm:text-xl font-bold text-gradient-gold mb-1">
-                {analytics.efficiencyMetrics.peakProductivityHour}
-              </div>
-              <div className="text-xs text-[#b0b8c1]">Peak Hour</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Enhanced Recent Activity */}
-        <div className="mb-4">
+      {/* Key Metrics */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 mb-8 sm:mb-12">
+        <div className="glass-dark rounded-xl sm:rounded-2xl border border-[#00eaff]/20 p-4 sm:p-6 shadow-dark hover:shadow-cyan transition-all duration-300">
           <div className="flex items-center justify-between mb-3">
-            <h3 className="text-lg font-bold text-gradient-cyan flex items-center gap-2">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="h-10 w-10 sm:h-12 sm:w-12 bg-[#00eaff]/10 rounded-lg sm:rounded-xl flex items-center justify-center border border-[#00eaff]/30">
+              <svg className="h-5 w-5 sm:h-6 sm:w-6 text-[#00eaff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+              </svg>
+            </div>
+          </div>
+          <span className="text-xs sm:text-sm text-[#b0b8c1] font-medium">Total Tasks</span>
+          <div className="text-xl sm:text-2xl md:text-3xl font-bold text-gradient-cyan">{analytics.totalTasks}</div>
+        </div>
+
+        <div className="glass-dark rounded-xl sm:rounded-2xl border border-[#43e97b]/20 p-4 sm:p-6 shadow-dark hover:shadow-cyan transition-all duration-300">
+          <div className="flex items-center justify-between mb-3">
+            <div className="h-10 w-10 sm:h-12 sm:w-12 bg-[#43e97b]/10 rounded-lg sm:rounded-xl flex items-center justify-center border border-[#43e97b]/30">
+              <svg className="h-5 w-5 sm:h-6 sm:w-6 text-[#43e97b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+          </div>
+          <span className="text-xs sm:text-sm text-[#b0b8c1] font-medium">Completion Rate</span>
+          <div className="text-xl sm:text-2xl md:text-3xl font-bold text-[#43e97b]">{analytics.completionRate}%</div>
+        </div>
+
+        <div className="glass-dark rounded-xl sm:rounded-2xl border border-[#a259ff]/20 p-4 sm:p-6 shadow-dark hover:shadow-cyan transition-all duration-300">
+          <div className="flex items-center justify-between mb-3">
+            <div className="h-10 w-10 sm:h-12 sm:w-12 bg-[#a259ff]/10 rounded-lg sm:rounded-xl flex items-center justify-center border border-[#a259ff]/30">
+              <svg className="h-5 w-5 sm:h-6 sm:w-6 text-[#a259ff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+          </div>
+          <span className="text-xs sm:text-sm text-[#b0b8c1] font-medium">Productivity Score</span>
+          <div className="text-xl sm:text-2xl md:text-3xl font-bold text-[#a259ff]">{analytics.productivityScore}</div>
+        </div>
+
+        <div className="glass-dark rounded-xl sm:rounded-2xl border border-[#f1c27d]/20 p-4 sm:p-6 shadow-dark hover:shadow-cyan transition-all duration-300">
+          <div className="flex items-center justify-between mb-3">
+            <div className="h-10 w-10 sm:h-12 sm:w-12 bg-[#f1c27d]/10 rounded-lg sm:rounded-xl flex items-center justify-center border border-[#f1c27d]/30">
+              <svg className="h-5 w-5 sm:h-6 sm:w-6 text-[#f1c27d]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              Recent Activity
-            </h3>
-            <div className="flex items-center gap-2">
-              <div className="h-1.5 w-1.5 bg-[#43e97b] rounded-full animate-pulse"></div>
-              <span className="text-xs text-[#43e97b] font-medium">Live Updates</span>
             </div>
           </div>
-          
-          {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-              {[...Array(3)].map((_, index) => (
-                <div key={index} className="p-4 rounded-xl bg-[#1a1a1a]/80 backdrop-blur-sm border border-[#00eaff]/20 animate-pulse h-24" />
-              ))}
+          <span className="text-xs sm:text-sm text-[#b0b8c1] font-medium">Avg. Completion Time</span>
+          <div className="text-xl sm:text-2xl md:text-3xl font-bold text-[#f1c27d]">{analytics.averageCompletionTime}d</div>
+        </div>
+      </div>
+
+      {/* Charts and Analytics Content */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 mb-8 sm:mb-12">
+        {/* Daily Progress Chart */}
+        <div className="glass-dark rounded-xl sm:rounded-2xl border border-[#00eaff]/20 p-4 sm:p-6 shadow-dark">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="h-8 w-8 sm:h-10 sm:w-10 bg-[#00eaff]/10 rounded-lg sm:rounded-xl flex items-center justify-center border border-[#00eaff]/30">
+              <svg className="h-4 w-4 sm:h-5 sm:w-5 text-[#00eaff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2z" />
+              </svg>
             </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-              {analytics.recentActivity.map((task, idx) => (
-                <div key={idx} className="p-4 rounded-xl bg-[#1a1a1a]/80 backdrop-blur-sm border border-[#00eaff]/20 hover:border-[#00eaff]/40 hover:shadow-xl transition-all duration-300 group">
-                  <div className="flex items-start justify-between mb-2">
-                    <h4 className="text-sm font-semibold text-[#00eaff] line-clamp-1 flex-1 group-hover:text-[#a259ff] transition-colors duration-200">
-                      {task.title}
-                    </h4>
-                    <span className={`ml-2 px-2 py-1 text-xs rounded-full font-medium ${
-                      task.status === 'completed' 
-                        ? 'bg-[#43e97b]/20 text-[#43e97b] border border-[#43e97b]/30'
-                        : task.status === 'in progress'
-                        ? 'bg-[#00eaff]/20 text-[#00eaff] border border-[#00eaff]/30'
-                        : 'bg-[#f1c27d]/20 text-[#f1c27d] border border-[#f1c27d]/30'
-                    }`}>
-                      {task.status}
-                    </span>
+            <h3 className="text-lg sm:text-xl font-bold text-[#b0b8c1]">Daily Progress</h3>
+          </div>
+          <div className="space-y-3">
+            {analytics.dailyProgress.map((day, index) => (
+              <div key={index} className="flex items-center justify-between">
+                <span className="text-sm text-[#b0b8c1] font-medium">{day.date}</span>
+                <div className="flex items-center gap-2">
+                  <div className="w-20 sm:w-24 h-2 bg-[#1a1a1a] rounded-full overflow-hidden">
+                    <div 
+                      className="h-full bg-gradient-to-r from-[#00eaff] to-[#a259ff] rounded-full transition-all duration-500"
+                      style={{ width: `${day.percentage}%` }}
+                    ></div>
                   </div>
-                  <p className="text-xs text-[#b0b8c1] line-clamp-2 mb-3">{task.description}</p>
-                  <div className="flex items-center justify-between text-xs">
-                    <div className="flex items-center gap-2">
-                      <span className={`px-2 py-1 rounded-full font-medium ${
-                        task.priority === 'high' 
-                          ? 'bg-[#ff6b6b]/20 text-[#ff6b6b] border border-[#ff6b6b]/30'
-                          : task.priority === 'medium'
-                          ? 'bg-[#f1c27d]/20 text-[#f1c27d] border border-[#f1c27d]/30'
-                          : 'bg-[#43e97b]/20 text-[#43e97b] border border-[#43e97b]/30'
-                      }`}>
-                        {task.priority}
-                      </span>
-                    </div>
-                    <span className="text-[#b0b8c1]">
-                      {new Date(task.updatedAt).toLocaleDateString()}
-                    </span>
-                  </div>
+                  <span className="text-xs sm:text-sm text-[#00eaff] font-medium w-8 text-right">
+                    {day.percentage}%
+                  </span>
                 </div>
-              ))}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Priority Distribution */}
+        <div className="glass-dark rounded-xl sm:rounded-2xl border border-[#00eaff]/20 p-4 sm:p-6 shadow-dark">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="h-8 w-8 sm:h-10 sm:w-10 bg-[#a259ff]/10 rounded-lg sm:rounded-xl flex items-center justify-center border border-[#a259ff]/30">
+              <svg className="h-4 w-4 sm:h-5 sm:w-5 text-[#a259ff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
             </div>
-          )}
+            <h3 className="text-lg sm:text-xl font-bold text-[#b0b8c1]">Priority Distribution</h3>
+          </div>
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-[#b0b8c1] font-medium">High Priority</span>
+              <div className="flex items-center gap-2">
+                <div className="w-20 sm:w-24 h-2 bg-[#1a1a1a] rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-[#ff6b6b] rounded-full transition-all duration-500"
+                    style={{ width: `${analytics.totalTasks > 0 ? (analytics.priorityDistribution.high / analytics.totalTasks) * 100 : 0}%` }}
+                  ></div>
+                </div>
+                <span className="text-xs sm:text-sm text-[#ff6b6b] font-medium w-8 text-right">
+                  {analytics.priorityDistribution.high}
+                </span>
+              </div>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-[#b0b8c1] font-medium">Medium Priority</span>
+              <div className="flex items-center gap-2">
+                <div className="w-20 sm:w-24 h-2 bg-[#1a1a1a] rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-[#f1c27d] rounded-full transition-all duration-500"
+                    style={{ width: `${analytics.totalTasks > 0 ? (analytics.priorityDistribution.medium / analytics.totalTasks) * 100 : 0}%` }}
+                  ></div>
+                </div>
+                <span className="text-xs sm:text-sm text-[#f1c27d] font-medium w-8 text-right">
+                  {analytics.priorityDistribution.medium}
+                </span>
+              </div>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-[#b0b8c1] font-medium">Low Priority</span>
+              <div className="flex items-center gap-2">
+                <div className="w-20 sm:w-24 h-2 bg-[#1a1a1a] rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-[#43e97b] rounded-full transition-all duration-500"
+                    style={{ width: `${analytics.totalTasks > 0 ? (analytics.priorityDistribution.low / analytics.totalTasks) * 100 : 0}%` }}
+                  ></div>
+                </div>
+                <span className="text-xs sm:text-sm text-[#43e97b] font-medium w-8 text-right">
+                  {analytics.priorityDistribution.low}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Efficiency Metrics */}
+      <div className="glass-dark rounded-xl sm:rounded-2xl border border-[#00eaff]/20 p-4 sm:p-6 shadow-dark mb-8 sm:mb-12">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="h-8 w-8 sm:h-10 sm:w-10 bg-[#f1c27d]/10 rounded-lg sm:rounded-xl flex items-center justify-center border border-[#f1c27d]/30">
+            <svg className="h-4 w-4 sm:h-5 sm:w-5 text-[#f1c27d]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <h3 className="text-lg sm:text-xl font-bold text-[#b0b8c1]">Efficiency Metrics</h3>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
+          <div className="text-center">
+            <div className="text-2xl sm:text-3xl font-bold text-[#00eaff] mb-1">{analytics.efficiencyMetrics.tasksPerDay}</div>
+            <div className="text-xs sm:text-sm text-[#b0b8c1] font-medium">Tasks/Day</div>
+          </div>
+          <div className="text-center">
+            <div className="text-2xl sm:text-3xl font-bold text-[#43e97b] mb-1">{analytics.efficiencyMetrics.completionEfficiency}%</div>
+            <div className="text-xs sm:text-sm text-[#b0b8c1] font-medium">Efficiency</div>
+          </div>
+          <div className="text-center">
+            <div className="text-2xl sm:text-3xl font-bold text-[#a259ff] mb-1">{analytics.efficiencyMetrics.averageTaskDuration}</div>
+            <div className="text-xs sm:text-sm text-[#b0b8c1] font-medium">Avg. Duration</div>
+          </div>
+          <div className="text-center">
+            <div className="text-lg sm:text-xl font-bold text-[#f1c27d] mb-1">{analytics.efficiencyMetrics.peakProductivityHour}</div>
+            <div className="text-xs sm:text-sm text-[#b0b8c1] font-medium">Peak Hour</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Recent Activity */}
+      <div className="glass-dark rounded-xl sm:rounded-2xl border border-[#00eaff]/20 p-4 sm:p-6 shadow-dark">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="h-8 w-8 sm:h-10 sm:w-10 bg-[#43e97b]/10 rounded-lg sm:rounded-xl flex items-center justify-center border border-[#43e97b]/30">
+            <svg className="h-4 w-4 sm:h-5 sm:w-5 text-[#43e97b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 className="text-lg sm:text-xl font-bold text-[#b0b8c1]">Recent Activity</h3>
+        </div>
+        <div className="space-y-3">
+          {analytics.recentActivity.map((task, index) => (
+            <div key={index} className="flex items-center justify-between p-3 rounded-lg bg-[#1a1a1a]/50 border border-[#00eaff]/10">
+              <div className="flex items-center gap-3">
+                <div className={`h-2 w-2 rounded-full ${
+                  task.status === 'completed' ? 'bg-[#43e97b]' : 
+                  task.status === 'in progress' ? 'bg-[#00eaff]' : 'bg-[#f1c27d]'
+                }`}></div>
+                <span className="text-sm text-[#b0b8c1] font-medium truncate">{task.title}</span>
+              </div>
+              <span className="text-xs text-[#b0b8c1] font-medium">
+                {new Date(task.updatedAt).toLocaleDateString()}
+              </span>
+            </div>
+          ))}
         </div>
       </div>
     </div>
